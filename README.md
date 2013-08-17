@@ -17,6 +17,11 @@ var player = V.makeEntity();
 player.addComponent(new PhysicsComponent(0, 0, 50, 50, 0, 0)); // x, y, width, height, velx, vely
 player.addComponent(new ControlComponent())                    // add keyboard controls
 player.addComponent(new RenderComponent("./media/man.png"))    // add an image to entity
+
+// tick the engine, presumably 60 times a second
+setInterval(function(){
+	V.step();
+}, 1000/60);
 ```
 
 ###### Component
@@ -43,21 +48,6 @@ var PhysicsComponent = V.makeComponent({
 V.addGlobal("PhysicsComponent", PhysicsComponent);
 ```
 
-When writing components, you may want to write serialize/deserialize functions to go with them. These functions will be used to save/load the state of the engine when saving or loading new levels or scenes. Following are two simple example serialization methods, of course other components may require more complicated methods than these.
-
-```javascript
-var PhysicsComponents = V.makeComponent({
-	// ... continued from above
-	serialize: function(){
-		return JSON.stringify(this);
-	},
-	deserialize: function(json){
-		var pc = new PhysicsComponent(json.x, json.y, json.width, json.height, json.velx, json.vely);
-		return pc;
-	}
-});
-```
-
 ###### SubSystem
 ```javascript
 var PhysicsSubsystem = V.makeSubsystem({
@@ -76,11 +66,50 @@ var PhysicsSubsystem = V.makeSubsystem({
 		}
 	}
 });
+
+V.addGlobal("PhysicsSubsystem", PhysicsSubsystem);
 ```
 
-Note that the `step` function takes in several arguments:
+Note that the `step()` method takes in several arguments:
 * `deltaTime` is the time that passed since that last global tick of the engine.
 * `entityIds` is an array containing all entities from a specific layer that answer to the system's requirements.
 * `layer` is the entity layer the system is currently operating on (Venus supports multiple entity layers, more on that below).
-* `round` is the count of how many times this subsystem was called in this particular global tick of the engine. The reason that is important is because if the subsystem had a set of requirements like so `[["physics, render"], ["tilemap"]]`, it would first operate on all entities that have components "physics" AND "render", and then again on all entities that have component "tilemap".
+* `round` is the count of how many times this subsystem was called in this particular global tick of the engine. The reason this may be important is: if the subsystem had a set of requirements such as `[["physics, render"], ["tilemap"]]`, it would first operate on all entities that have components "physics" AND "render", and then again on all entities that have component "tilemap".
 
+### Entity Layers
+Venus supports the concept of entity layers. You can declare which layer an entity goes into by passing in an integer into `V.makeEntity()`:
+```javascript
+	var car = V.makeEntity(0);
+	var plane = V.makeEntity(1);
+```
+In the above case, the `car` entity is placed in layer 0, and the `plane` entity in layer 1. Assuming both entities have a "render component", the rendering subsystem would operate on layer 0 first and 1 second, thus drawing the plane over the car. Likewise, if the entities had a "collision component", the physics subsystem would not register a collision between them since it would operate on the two layers separately.
+
+### Saving State (serializing/deserializing)
+
+When writing components, you may want to write serialize/deserialize functions to go with them. These functions will be used to save/load the state of the engine when saving or loading new levels or scenes. Following are two simple example serialization methods, of course other components may require more complicated methods than these.
+
+```javascript
+var PhysicsComponent = V.makeComponent({
+	// ... continued from above
+	serialize: function(){
+		return JSON.stringify(this);
+	},
+	deserialize: function(json){
+		var pc = new PhysicsComponent(json.x, json.y, json.width, json.height, json.velx, json.vely);
+		return pc;
+	}
+});
+
+// you must do this if you want the component to be serializable
+V.addSRLZ("physics", PhysicsComponent); // component name, component class
+```
+
+Then, in order to save or load the state of the engine:
+```javascript
+	// save state
+	var stateStr = V.serialize(); 
+	// load state
+	var stateJson = JSON.parse(stateStr);
+	V.deserialize(stateJson);
+```
+If there are any problems with the serialization methods you wrote for any of your components, or if you forgot to `V.addSRLZ()`, Venus should let you know.
