@@ -4,7 +4,7 @@ Venus: Entity Component System
 ### Entity Component System
 Venus is an Entity Component System meant for HTML5 game development. It allows you to easily modularize your code by using multiple inheritance, thus avoiding deep inheritance trees that can often be a nightmare to maintain. This project is mostly practice for me, for a similar (and probably more stable) ECS engine, try out [Crafty](http://craftyjs.com/).
 
-Currently, most of these folders are empty since I want to clean up my code before putting it up. However, the barebones for Venus are all here in js/engine.
+Currently, most of these folders are empty since I want to clean up my code before putting it up. However, the barebones for Venus are all here in ./static/js/engine.
 
 The way it works is this:
 * __Entities__ are simply buckets with unique IDs that hold components. 
