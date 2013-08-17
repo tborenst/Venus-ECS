@@ -8,3 +8,12 @@ The way it works is this:
 * __Entities__ are simply buckets with unique IDs that hold components. 
 * __Components__ are data holders that define some sort of behavior (but usually contain only data, not logic). Example components could be a "phsyics component" that defines the coordinates and shape of a rigid body, or perhaps a "render component" that defines a spritesheet and possible animations that spritesheet could play.
 * __Subsystems__ are the pieces of the program that contain the logic that operates on the data from the components. Subystems have requirements, and execute logic on all entities that answer those requirements.
+
+### Example Code
+
+###### Entity
+```javascript
+// make a player at position (0, 0) with dimensions of (width: 50, height: 50)
+var player = V.makeEntity();
+player.addComponent(new PhysicsComponent(0, 0, 50, 50));
+```
