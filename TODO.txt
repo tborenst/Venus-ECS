@@ -1,0 +1,26 @@
+//==========//
+// TODO.TXT //
+//==========//
+
+// PHYSICS COMPONENT & SYSTEM //
+- add collision notification between two C.SOFT objects [ ]
+- add collision *resolution* between two C.SOFT objects [ ]
+- optimize to not check parallel axes (SAT)             [ ]
+- optimize to check using Bounding Boxes (SAT)          [ ]
+- add acceleration, momentum, and forces                [ ]
+- only check in surrounding area                        [ ]
+- rework to not-need the "resolve twice" part of SAT    [ ]
+- make it work with delta time                          [ ] 
+
+// RENDER COMPONENT & SYSTEM //
+- make animation speed be agnostic to clock ticks       [ ]
+- make another render component for tilemaps            [x]
+- add way to show grid of tilemaps                      [ ]
+- add stop / resume function to whole render component  [ ] currently only on sprite sheets
+- tilemap: make it work with a signle spritesheet image [ ]
+
+// LEVEL EDITOR //
+- entity folder                                         [ ] ?
+- node server to "save" files                           [ ]
+- add "included files" to serialization                 [ ] do we need to?
+- AND just use mongoDB to store...                      [ ]
