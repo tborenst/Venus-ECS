@@ -2,7 +2,7 @@ Venus: Entity Component System
 ======
 
 ### Entity Component System
-Venus is an Entity Component System meant for HTML5 game development. It allows you to easily modularize your code by using multiple inheritance, thus avoiding deep inheritance trees that can often be a nightmare to maintain.
+Venus is an Entity Component System meant for HTML5 game development. It allows you to easily modularize your code by using multiple inheritance, thus avoiding deep inheritance trees that can often be a nightmare to maintain. This project is mostly practice for me, for a similar (and probably more stable) ECS engine, try out [Crafty](http://craftyjs.com/).
 
 The way it works is this:
 * __Entities__ are simply buckets with unique IDs that hold components. 
@@ -10,7 +10,6 @@ The way it works is this:
 * __SubSystems__ are the pieces of the program that contain the logic that operates on the data from the components. Subystems have requirements, and execute logic on all entities that answer those requirements.
 
 ### Example Code
-
 ###### Entity
 ```javascript
 var player = V.makeEntity();
@@ -85,7 +84,6 @@ Venus supports the concept of entity layers. You can declare which layer an enti
 In the above case, the `car` entity is placed in layer 0, and the `plane` entity in layer 1. Assuming both entities have a "render component", the rendering subsystem would operate on layer 0 first and 1 second, thus drawing the plane over the car. Likewise, if the entities had a "collision component", the physics subsystem would not register a collision between them since it would operate on the two layers separately.
 
 ### Saving State (serializing/deserializing)
-
 When writing components, you may want to write serialize/deserialize functions to go with them. These functions will be used to save/load the state of the engine when saving or loading new levels or scenes. Following are two simple example serialization methods, of course other components may require more complicated methods than these.
 
 ```javascript
@@ -113,3 +111,16 @@ Then, in order to save or load the state of the engine:
 	V.deserialize(stateJson);
 ```
 If there are any problems with the serialization methods you wrote for any of your components, or if you forgot to `V.addSRLZ()`, Venus should let you know.
+
+### Coming Soon
+These are mostly done, but I want to clean them up before putting them here:
+* Fully working physics/collision system (Separating Axis Theorem)
+* Fully working rendering system that allows for multi-layered sprite animations
+* Fully working "WASD" control system with events/triggers
+These need to be written:
+* Pub/Sub event system
+* GUI for Venus (a sort of a level/scene editor)
+* Node server to serve up the GUI and save/load levels/scenes
+These need to be thought about:
+* Add a way for easy networking with node.js and socket.io
+* Further optimizations to the engine
