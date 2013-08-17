@@ -112,7 +112,7 @@ Then,
 ```
 
 ### Entity Layers
-Venus supports the concept of entity layers. You can declare which layer an entity goes into by passing in an integer into `V.makeEntity()`:
+Venus supports the concept of entity layers. You can declare which layer an entity goes into by passing in an integer into `V.makeEntity()` (default is 0):
 ```javascript
 	var car = V.makeEntity(0);
 	var plane = V.makeEntity(1);
