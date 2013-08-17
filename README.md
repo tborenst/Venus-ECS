@@ -117,10 +117,12 @@ These are mostly done, but I want to clean them up before putting them here:
 * Fully working physics/collision system (Separating Axis Theorem)
 * Fully working rendering system that allows for multi-layered sprite animations
 * Fully working "WASD" control system with events/triggers
+
 These need to be written:
 * Pub/Sub event system
 * GUI for Venus (a sort of a level/scene editor)
 * Node server to serve up the GUI and save/load levels/scenes
+
 These need to be thought about:
 * Add a way for easy networking with node.js and socket.io
 * Further optimizations to the engine
