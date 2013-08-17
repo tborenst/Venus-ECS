@@ -77,6 +77,40 @@ Note that the `step()` method takes in several arguments:
 * `layer` is the entity layer the system is currently operating on (Venus supports multiple entity layers, more on that below).
 * `round` is the count of how many times this subsystem was called in this particular global tick of the engine. The reason this may be important is: if the subsystem had a set of requirements such as `[["physics, render"], ["tilemap"]]`, it would first operate on all entities that have components "physics" AND "render", and then again on all entities that have component "tilemap".
 
+Subsystems can also communicate with one another via Pub/Sub system. For example, the "health" subsystem might want to know when two objects collide in order to deduct from their health. However, the "physics" subsystem is in charge of collisions, not the "health" subsystem. In this case, we would have the "physics" subsystem emit an event in its `step()` function when two entities collide, and then have the "health" subsystem listen to that event.
+
+First,
+```javascript
+var PhysicsSubsystem = V.makeSubsystem({
+	// continued from above...
+	step: function(deltaTime, entityIds, entityLayer, round){
+		for(var i = 0; i < entityIds.length; i++){
+			var entity1 = V.getEntity(entityIds[i]);
+			var pc1 = entity1.getComponent("physics");
+			for(var j = i + 1; j < entityIds.length; j++){
+				var entity2 = V.getEntity(entityIds[j]);
+				var pc2 = entity2.getComponent("physics");
+
+				// emit collision event to other subsystems
+				if(pc1.collides(pc2)){
+					this.emit("collision", {entity1: entityIds[i], entity2: entityIds[j]});
+				}
+			}
+		}
+	}
+});
+```
+Then,
+```javascript
+	var HealthSubystem = V.makeSubsystem({/* ... */});
+	HealthSubsystem.on("collision", function(data){
+		var id1 = data.entity1;
+		var id2 = data.entity2;
+
+		// get entities, deduct their health, etc...
+	});
+```
+
 ### Entity Layers
 Venus supports the concept of entity layers. You can declare which layer an entity goes into by passing in an integer into `V.makeEntity()`:
 ```javascript
