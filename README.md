@@ -1,4 +1,4 @@
-Venus: Entity Component System 
+Venus: an Entity Component System 
 ======
 
 ### Entity Component System
@@ -15,9 +15,12 @@ The way it works is this:
 ###### Entity
 ```javascript
 var player = V.makeEntity();
-player.addComponent(new PhysicsComponent(0, 0, 50, 50, 0, 0)); // x, y, width, height, velx, vely
-player.addComponent(new ControlComponent())                    // add keyboard controls
-player.addComponent(new RenderComponent("./media/man.png"))    // add an image to entity
+// x, y, width, height, velx, vely
+player.addComponent(new PhysicsComponent(0, 0, 50, 50, 0, 0));
+// add keyboard controls
+player.addComponent(new ControlComponent());
+// add an image to entity
+player.addComponent(new RenderComponent("./media/man.png"));
 
 // tick the engine, presumably 60 times a second
 setInterval(function(){
@@ -56,7 +59,7 @@ var PhysicsSubsystem = V.makeSubsystem({
 	name: "physics",
 	init: function(){
 		// empty in this example, but with a more complicated physics system
-		// you could initialize things like gravity here...
+		// you could initialize things like gravity, etc...
 	},
 	requirements: ["physics"],
 	step: function(deltaTime, entityIds, entityLayer, round){
@@ -102,13 +105,12 @@ var PhysicsSubsystem = V.makeSubsystem({
 ```
 Then,
 ```javascript
-	var HealthSubystem = V.makeSubsystem({/* ... */});
-	HealthSubsystem.on("collision", function(data){
-		var id1 = data.entity1;
-		var id2 = data.entity2;
-
-		// get entities, deduct their health, etc...
-	});
+var HealthSubystem = V.makeSubsystem({/* ... */});
+HealthSubsystem.on("collision", function(data){
+	var id1 = data.entity1;
+	var id2 = data.entity2;
+	// get entities, deduct their health, etc...
+});
 ```
 
 ### Entity Layers
