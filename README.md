@@ -55,7 +55,7 @@ V.addGlobal("PhysicsComponent", PhysicsComponent);
 ###### SubSystem
 ```javascript
 var PhysicsSubsystem = V.makeSubsystem({
-	// required fileds: name, init function, requirements, and step function
+	// required fields: name, init function, requirements, and step function
 	name: "physics",
 	init: function(){
 		// empty in this example, but with a more complicated physics system
@@ -150,7 +150,7 @@ Then, in order to save or load the state of the engine:
 ```
 If there are any problems with the serialization methods you wrote for any of your components, or if you forgot to `V.addSRLZ()`, Venus should let you know.
 
-### Coming Soon
+### Coming Sometime in the Future
 These are mostly done, but I want to clean them up before putting them here:
 * Fully working physics/collision system (Separating Axis Theorem)
 * Fully working rendering system that allows for multi-layered sprite animations
